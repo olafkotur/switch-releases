@@ -1,0 +1,8 @@
+{
+  "darwin-x64-prod": {
+    "readme": "Release Test 1",
+    "update": "https://github.com/megahertz/electron-simple-updater/releases/download/darwin-x64-prod-v0.0.2/release.json",
+    "install": "https://github.com/megahertz/electron-simple-updater/releases/download/darwin-x64-prod-v0.0.2/Simple.Updater.Example-0.0.2.dmg",
+    "version": "0.0.1"
+  }
+}
