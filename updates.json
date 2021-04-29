@@ -1,8 +1,8 @@
 {
   "darwin-x64-prod": {
-    "readme": "Release Test 1",
+    "readme": "Release Test 2",
     "update": "https://raw.githubusercontent.com/olafkotur/switch-releases/master/release.json",
-    "install": "https://github.com/olafkotur/switch-releases/releases/download/v0.0.1/Switch-0.0.1.dmg",
-    "version": "0.0.1"
+    "install": "https://github.com/olafkotur/switch-releases/releases/download/v0.0.2/Switch-0.0.2.dmg",
+    "version": "0.0.2"
   }
 }
