@@ -14,7 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Update release assets
+      - name: Update Release
         run: |
           git checkout -b ${{ env.BRANCH_NAME }}
 
@@ -27,15 +27,21 @@ jobs:
           git commit -m "Update release files"
           git push origin ${{ env.BRANCH_NAME }}
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          base: main
-          branch: ${{ env.BRANCH_NAME }}
-          title: Release ${{ env.RELEASE_TAG }}
-          token: ${{ secrets.GH_TOKEN }}
-          assignees: ${{ secrets.AUTHOR_USERNAME }}
-          committer: ${{ secrets.AUTHOR_USERNAME }} <${{ secrets.AUTHOR_EMAIL }}>
-          author: ${{ secrets.AUTHOR_USERNAME }} <${{ secrets.AUTHOR_EMAIL }}>
-          body: |
-            Automated changes for release ${{ env.RELEASE_TAG }}
+          # create a new pull request
+          PR_TITLE="Release ${{ env.RELEASE_TAG }}"
+          PR_BODY="Automated changes for release ${{ env.RELEASE_TAG }}"
+          GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          REPO_OWNER="${{ github.repository_owner }}"
+          REPO_NAME="${{ github.repository }}"
+          BASE_BRANCH="main"
+
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "title": "'"$PR_TITLE"'",
+              "body": "'"$PR_BODY"'",
+              "head": "'"$REPO_OWNER"':'"$env.BRANCH_NAME"'",
+              "base": "'"$BASE_BRANCH"'"
+            }' \
+            "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/pulls"
