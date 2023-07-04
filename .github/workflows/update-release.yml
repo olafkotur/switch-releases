@@ -1,4 +1,5 @@
 name: update-release
+
 on:
   release:
     types: [published]
@@ -8,25 +9,28 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
-      BRANCH_NAME: release-${{ github.event.release.tag_name }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Update release assets
         run: |
-          git checkout -b ${{ env.BRANCH_NAME }}
+          git checkout -b draft-release-${{ env.RELEASE_TAG }}
+
           node index.js ${{ env.RELEASE_TAG }}
+
           git config --local user.email "${{ secrets.AUTHOR_EMAIL }}"
           git config --local user.name "${{ secrets.AUTHOR_USERNAME }}"
+
           git add .
           git commit -m "Update release files"
-          git push origin ${{ env.BRANCH_NAME }}
+          git push origin draft-release-${{ env.RELEASE_TAG }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: ${{ env.BRANCH_NAME }}
+          base: draft-release-${{ env.RELEASE_TAG }}
+          branch: release-${{ env.RELEASE_TAG }}
           title: Release ${{ env.RELEASE_TAG }}
           token: ${{ secrets.GH_TOKEN }}
           assignees: ${{ secrets.AUTHOR_USERNAME }}
