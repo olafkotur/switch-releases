@@ -27,20 +27,9 @@ jobs:
           git commit -m "Update release files"
           git push origin ${{ env.BRANCH_NAME }}
 
-          curl -L \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{
-              "title": "Release ${{ env.RELEASE_TAG }}",
-              "body": "Automated changes for release ${{ env.RELEASE_TAG }}",
-              "head": "${{ env.BRANCH_NAME }}",
-              "base": "main"
-            }' \
-            "https://api.github.com/repos/${{ secrets.AUTHOR_USERNAME }}/${{ github.repository }}/pulls"
-
       - name: Wait for Branch
         run: |
+          echo https://api.github.com/repos/${{ secrets.AUTHOR_USERNAME }}/${{ github.repository }}/pulls
           sleep 15
 
       - name: Create Pull Request
