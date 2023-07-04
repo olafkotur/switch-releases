@@ -26,7 +26,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          base: main
           branch: ${{ env.BRANCH_NAME }}
           title: Release ${{ env.RELEASE_TAG }}
           token: ${{ secrets.GH_TOKEN }}
