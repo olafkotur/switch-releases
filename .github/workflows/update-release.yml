@@ -1,8 +1,7 @@
 name: update-release
 on:
   release:
-    types:
-      - created
+    types: [published]
 
 jobs:
   update-release:
