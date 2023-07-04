@@ -1,0 +1,37 @@
+name: update-release
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  update-release:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run Script
+        run: node index.js ${{ env.RELEASE_TAG }}
+
+      - name: Create Branch
+        run: |
+          git checkout -b release-${{ env.RELEASE_TAG }}
+
+      - name: Commit Changes
+        run: |
+          git config --local user.email "${{ secrets.AUTHOR_EMAIL }}"
+          git config --local user.name "${{ secrets.AUTHOR_USERNAME }}"
+          git add .
+          git commit -m "Update release files"
+          git push origin release-${{ env.RELEASE_TAG }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: release-${{ env.RELEASE_TAG }}
+          title: Release ${{ env.RELEASE_TAG }}
+          body: |
+            This pull request is automated for release ${{ env.RELEASE_TAG }}
