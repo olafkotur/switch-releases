@@ -35,6 +35,14 @@ jobs:
           REPO_NAME="${{ github.repository }}"
           BASE_BRANCH="main"
 
+          echo "PR_TITLE: Release ${{ env.RELEASE_TAG }}"
+          echo "PR_BODY: Automated changes for release ${{ env.RELEASE_TAG }}"
+          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+          echo "REPO_OWNER: ${{ github.repository_owner }}"
+          echo "REPO_NAME: ${{ github.repository }}"
+          echo "BASE_BRANCH: main"
+          
+
           curl -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
