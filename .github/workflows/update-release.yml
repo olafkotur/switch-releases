@@ -13,15 +13,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Run Script
-        run: node index.js ${{ env.RELEASE_TAG }}
-
-      - name: Create Branch
+      - name: Update release assets
         run: |
           git checkout -b ${{ env.BRANCH_NAME }}
-
-      - name: Commit Changes
-        run: |
+          node index.js ${{ env.RELEASE_TAG }}
           git config --local user.email "${{ secrets.AUTHOR_EMAIL }}"
           git config --local user.name "${{ secrets.AUTHOR_USERNAME }}"
           git add .
