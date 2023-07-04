@@ -36,6 +36,6 @@ jobs:
           title: Release ${{ env.RELEASE_TAG }}
           token: ${{ secrets.GH_TOKEN }}
           assignees: ${{ secrets.AUTHOR_USERNAME }}
-          committer: Olaf Kotur ${{ secrets.AUTHOR_EMAIL }}
+          committer: ${{ secrets.AUTHOR_USERNAME }} <${{ secrets.AUTHOR_EMAIL }}>
           body: |
             Automated changes for release ${{ env.RELEASE_TAG }}
