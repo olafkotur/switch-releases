@@ -26,12 +26,15 @@ jobs:
           git config --local user.name "${{ secrets.AUTHOR_USERNAME }}"
           git add .
           git commit -m "Update release files"
-          git push origin release-${{ env.RELEASE_TAG }}
+          git push origin ${{ env.BRANCH_NAME }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: release-${{ env.RELEASE_TAG }}
+          base: main
+          branch: ${{ env.BRANCH_NAME }}
           title: Release ${{ env.RELEASE_TAG }}
+          token: ${{ secrets.GH_TOKEN }}
+          assignees: ${{ secrets.AUTHOR_USERNAME }}
           body: |
-            This pull request is automated for release ${{ env.RELEASE_TAG }}
+            Automated changes for release ${{ env.RELEASE_TAG }}
