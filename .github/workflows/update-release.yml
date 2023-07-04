@@ -27,29 +27,14 @@ jobs:
           git commit -m "Update release files"
           git push origin ${{ env.BRANCH_NAME }}
 
-          # create a new pull request
-          PR_TITLE="Release ${{ env.RELEASE_TAG }}"
-          PR_BODY="Automated changes for release ${{ env.RELEASE_TAG }}"
-          GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          REPO_OWNER="${{ github.repository_owner }}"
-          REPO_NAME="${{ github.repository }}"
-          BASE_BRANCH="main"
-
-          echo "PR_TITLE: Release ${{ env.RELEASE_TAG }}"
-          echo "PR_BODY: Automated changes for release ${{ env.RELEASE_TAG }}"
-          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-          echo "REPO_OWNER: ${{ github.repository_owner }}"
-          echo "REPO_NAME: ${{ github.repository }}"
-          echo "BASE_BRANCH: main"
-          
-
-          curl -X POST \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Content-Type: application/json" \
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -d '{
-              "title": "'"$PR_TITLE"'",
-              "body": "'"$PR_BODY"'",
-              "head": "'"$REPO_OWNER"':'"$env.BRANCH_NAME"'",
-              "base": "'"$BASE_BRANCH"'"
+              "title": "Release ${{ env.RELEASE_TAG }}",
+              "body": "Automated changes for release ${{ env.RELEASE_TAG }}",
+              "head": "${{ env.BRANCH_NAME }}",
+              "base": "main"
             }' \
-            "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/pulls"
+            "https://api.github.com/repos/${{ secrets.AUTHOR_USERNAME }}/${{ github.repository }}/pulls"
