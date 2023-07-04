@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name }}
+      BRANCH_NAME: release-${{ github.event.release.tag_name }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -17,7 +18,7 @@ jobs:
 
       - name: Create Branch
         run: |
-          git checkout -b release-${{ env.RELEASE_TAG }}
+          git checkout -b ${{ env.BRANCH_NAME }}
 
       - name: Commit Changes
         run: |
