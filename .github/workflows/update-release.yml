@@ -29,7 +29,6 @@ jobs:
 
       - name: Wait for Branch
         run: |
-          echo https://api.github.com/repos/${{ secrets.AUTHOR_USERNAME }}/${{ github.repository }}/pulls
           sleep 15
 
       - name: Create Pull Request
@@ -44,4 +43,4 @@ jobs:
               "head": "${{ env.BRANCH_NAME }}",
               "base": "main"
             }' \
-            "https://api.github.com/repos/${{ secrets.AUTHOR_USERNAME }}/${{ github.repository }}/pulls"
+            "https://api.github.com/repos/olafkotur/switch-releases/pulls"
