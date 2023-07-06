@@ -6,8 +6,16 @@ jobs:
   notify-release:
     runs-on: ubuntu-latest
     steps:
+      - name: Fetch Release Notes
+        run: |
+          RELEASE_JSON=$(curl -s https://api.github.com/repos/olafkotur/switch-releases/releases/latest)
+          RELEASE_NOTES_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name == "release-notes.md") | .browser_download_url')
+
+          curl -LO $RELEASE_NOTES_URL
+          RELEASE_NOTES=$(grep -o '^- .*' release-notes.md | sed -e 's/^- //' | tr '\n' '\n')
+
       - name: Send Message
         run: |
-            curl -X POST -H "Content-Type: application/json" -d '{
-              "content": "Hello World"
-            }' ${{ secrets.NOTIFY_URL }}
+          RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed -e 's/"/\\"/g')
+          PAYLOAD="{ \"content\": \"$RELEASE_NOTES\" }"
+          curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.NOTIFY_URL }}
