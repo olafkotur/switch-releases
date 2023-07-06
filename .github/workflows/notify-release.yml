@@ -1,0 +1,13 @@
+name: notify-release
+on:
+  workflow_dispatch:
+  
+jobs:
+  notify-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Message
+        run: |
+            curl -X POST -H "Content-Type: application/json" -d '{
+              "content": "Hello World"
+            }' ${{ NOTIFY_URL }}
