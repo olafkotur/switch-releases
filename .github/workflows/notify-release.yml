@@ -12,10 +12,10 @@ jobs:
           RELEASE_NOTES_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name == "release-notes.md") | .browser_download_url')
 
           curl -LO $RELEASE_NOTES_URL
-          RELEASE_NOTES=$(grep -o '^- .*' release-notes.md | sed -e 's/^- //' | tr '\n' '\n')
+          echo "RELEASE_NOTES=$(grep -o '^- .*' release-notes.md | sed -e 's/^- //' | tr '\n' '\n')" >> $GITHUB_ENV
 
       - name: Send Message
         run: |
-          RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed -e 's/"/\\"/g')
-          PAYLOAD="{ \"content\": \"$RELEASE_NOTES\" }"
+          BODY=$(echo "$RELEASE_NOTES" | sed -e 's/"/\\"/g')
+          PAYLOAD="{ \"content\": \"$BODY\" }"
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.NOTIFY_URL }}
