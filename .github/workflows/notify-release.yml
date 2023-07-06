@@ -1,6 +1,9 @@
 name: notify-release
+
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
   
 jobs:
   notify-release:
