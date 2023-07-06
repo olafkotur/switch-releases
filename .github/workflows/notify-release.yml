@@ -10,4 +10,4 @@ jobs:
         run: |
             curl -X POST -H "Content-Type: application/json" -d '{
               "content": "Hello World"
-            }' ${{ NOTIFY_URL }}
+            }' ${{ secrets.NOTIFY_URL }}
